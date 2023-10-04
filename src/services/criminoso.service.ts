@@ -1,50 +1,47 @@
 import repository from "../database/prisma.database";
 import { Criminoso } from "../model/criminoso.model";
 
-class CriminosoService{
+class CriminosoService {
+  public async listAll() {
+    const data = await repository.criminoso.findMany();
+    return data;
+  }
 
-    public async listAll(){
-        const data =  await repository.criminoso.findMany()
-        return data
-    }
+  public async listaCrimesById(id: string) {
+    const criminoso = await repository.criminoso.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        Crime: true,
+      },
+    });
 
-    public async listaCrimesById(id:string){
-        const criminoso = await repository.criminoso.findUnique({
-            where:{
-                id
-            },
-            include:{
-                Crime:true
-            }
-        })
+    return criminoso;
+  }
 
-        return criminoso
-    }
+  public async create(data: any) {
+    //mudar tipagem e criar DTO
+    const criminoso = new Criminoso(data.name, data.crime);
 
-    public async create(data:any){ //mudar tipagem e criar DTO
-        const criminoso = new Criminoso(data.name, data.crime)
+    const criaCriminoso = await repository.criminoso.create({
+      data: {
+        name: criminoso.name,
+      },
+    });
 
-        const criaCriminoso = await repository.criminoso.create({
-            data:{
-                name: criminoso.name
-            }
-        })
+    return criaCriminoso;
+  }
 
-    
-        return criaCriminoso
-    }
+  public async delete(id: string) {
+    const criminosoCrime = await repository.crime.delete({
+      where: {
+        id,
+      },
+    });
 
-    public async delete (id:string){
-        
-
-        const criminosoCrime = await repository.crime.delete({
-            where:{
-                id
-            }
-        })
-
-        return criminosoCrime
-    }
+    return criminosoCrime;
+  }
 }
 
-export default new CriminosoService()
+export default new CriminosoService();

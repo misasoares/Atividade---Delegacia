@@ -1,46 +1,52 @@
 import repository from "../database/prisma.database";
 import { Crime } from "../model/crime.model";
 
-class CrimeServie{
+class CrimeServie {
+  public async listAll() {
+    const data = await repository.crime.findMany({
+      include: {
+        Armas: true,
+      },
+    });
 
-    public async listAll(){
+    return data;
+  }
 
-        const data = await repository.crime.findMany({
-            include:{
-                Armas: true
-            }
-        })
+  public async create(data: any) {
+    const crime = new Crime(data.name, data.criminosoId);
 
+    const criaCrime = await repository.crime.create({
+      data: {
+        name: crime.name,
+        criminosoId: crime.criminosoId,
+      },
+    });
 
-        return data
-    }
+    return criaCrime;
+  }
 
-    public async create(data:any){
-        const crime = new Crime(data.name, data.criminosoId)
+  public async delete(data: string) {
+    const deleteCrime = await repository.crime.delete({
+      where: {
+        id: data,
+      },
+    });
 
-        const criaCrime = await repository.crime.create({
-            data:{
-                name: crime.name,
-                criminosoId: crime.criminosoId,
-                // Armas: crime.arma
-            },
-            
-        })
-    
-        return criaCrime
-    }
+    return deleteCrime;
+  }
 
-    public async delete (data:string){
-        
+  public async listArmasDoCrime(id: string) {
+    const crime = await repository.crime.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        Armas: true,
+      },
+    });
 
-        const deleteCrime = await repository.crime.delete({
-            where:{
-                id: data
-            }
-        })
-
-        return deleteCrime
-    }
+    return crime;
+  }
 }
 
-export default new CrimeServie()
+export default new CrimeServie();

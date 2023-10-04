@@ -2,48 +2,42 @@ import { Request, Response } from "express";
 import criminosoService from "../services/criminoso.service";
 
 export class CriminosoController {
+  public async list(req: Request, res: Response) {
+    const result = await criminosoService.listAll();
+    return res.status(200).send(result);
+  }
 
-    public async list(req:Request, res:Response){
-        const result = await criminosoService.listAll()
-        return res.status(200).send(result)
+  public async create(req: Request, res: Response) {
+    try {
+      const { name } = req.body;
+      const result = await criminosoService.create({
+        name,
+      });
+
+      return res.status(201).send(result);
+    } catch (error) {
+      return res.status(400).send(error);
     }
+  }
 
+  public async delete(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
 
-    public async create(req:Request, res:Response){
-        try {
-            const {name} = req.body
-            const result = await criminosoService.create({
-                name
-            })
+      const result = await criminosoService.delete(id);
 
-            return res.status(201).send(result)
-            
-        } catch (error) {
-            return res.status(400).send(error)
-        }
+      return res.status(200).send({ message: "Criminoso deletado com sucesso.", data: result });
+    } catch (error) {
+      return res.status(500).send(error);
     }
+  }
 
-    public async delete(req:Request, res:Response){
-        try {
-            const { id } = req.params
-            
+  public async listaCrimesById(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
 
-            const result = await criminosoService.delete(id)
-
-            return res.status(200).send({message:"Criminoso deletado com sucesso.", data:result})
-        } catch (error) {
-            return res.status(500).send(error)
-        }
-    }
-
-    public async listaCrimesById(req:Request, res:Response){
-        try {
-            const { id} = req.params
-
-            const result = await criminosoService.listaCrimesById(id)
-            return res.status(200).send({message:"Listando todos os crimes do usuário:", data:result})
-        } catch (error) {
-            
-        }
-    }
+      const result = await criminosoService.listaCrimesById(id);
+      return res.status(200).send({ message: "Listando todos os crimes do usuário:", data: result });
+    } catch (error) {}
+  }
 }
