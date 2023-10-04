@@ -22,4 +22,17 @@ export class CriminosoController {
             return res.status(400).send(error)
         }
     }
+
+    public async delete(req:Request, res:Response){
+        try {
+            const { id } = req.params
+            
+
+            const result = await criminosoService.delete(id)
+
+            return res.status(200).send({message:"Criminoso deletado com sucesso.", data:result})
+        } catch (error) {
+            return res.status(500).send(error)
+        }
+    }
 }

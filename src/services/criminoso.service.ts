@@ -20,6 +20,18 @@ class CriminosoService{
     
         return criaCriminoso
     }
+
+    public async delete (id:string){
+        
+
+        const criminosoCrime = await repository.crime.delete({
+            where:{
+                id
+            }
+        })
+
+        return criminosoCrime
+    }
 }
 
 export default new CriminosoService()

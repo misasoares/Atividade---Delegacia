@@ -23,18 +23,16 @@ export class CrimeController{
         }
     }
 
-    public async update(req:Request, res:Response){
+
+
+    public async delete(req:Request, res:Response){
         try {
             const { id } = req.params
-            const { name, criminosoId } = req.body
+            
 
-            const result = await crimeService.update({
-                id, name, criminosoId
+            const result = await crimeService.delete(id)
 
-                
-            })
-
-            return res.status(200).send({message:"Crime Atualizado com sucesso.", data:result})
+            return res.status(200).send({message:"Crime deletado com sucesso.", data:result})
         } catch (error) {
             return res.status(500).send(error)
         }

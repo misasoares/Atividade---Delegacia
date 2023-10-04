@@ -8,7 +8,7 @@ export const crimeRoutes = ()=>{
 
     router.post('/cria', new CrimeController().create)
 
-    router.put('/atualizar/:id', new CrimeController().update)
+    router.delete('/deletar/:id', new CrimeController().delete)
 
     return router
 }

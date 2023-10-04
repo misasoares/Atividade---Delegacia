@@ -30,24 +30,16 @@ class CrimeServie{
         return criaCrime
     }
 
-    public async update (data:any){
-        const crime = await repository.crime.findUnique({
+    public async delete (data:string){
+        
+
+        const deleteCrime = await repository.crime.delete({
             where:{
-                id: data.id
+                id: data
             }
         })
 
-        const updatedCrime = await repository.crime.update({
-            where:{
-                id: data.id
-            },
-            data:{
-                name: data.name,
-                criminosoId: data.criminosoId
-            }
-        })
-
-        return updatedCrime
+        return deleteCrime
     }
 }
 
