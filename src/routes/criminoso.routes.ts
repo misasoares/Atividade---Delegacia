@@ -7,6 +7,8 @@ export const criminosoRoutes = ()=>{
     router.get('/lista', new CriminosoController().list)
     router.post('/criar', new CriminosoController().create)
     router.delete('/deletar/:id', new CriminosoController().delete)
+
+    router.get('/lista-crimes/:id', new CriminosoController().listaCrimesById)
    
 
     return router

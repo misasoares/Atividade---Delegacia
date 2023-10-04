@@ -8,6 +8,19 @@ class CriminosoService{
         return data
     }
 
+    public async listaCrimesById(id:string){
+        const criminoso = await repository.criminoso.findUnique({
+            where:{
+                id
+            },
+            include:{
+                Crime:true
+            }
+        })
+
+        return criminoso
+    }
+
     public async create(data:any){ //mudar tipagem e criar DTO
         const criminoso = new Criminoso(data.name, data.crime)
 

@@ -35,4 +35,15 @@ export class CriminosoController {
             return res.status(500).send(error)
         }
     }
+
+    public async listaCrimesById(req:Request, res:Response){
+        try {
+            const { id} = req.params
+
+            const result = await criminosoService.listaCrimesById(id)
+            return res.status(200).send({message:"Listando todos os crimes do usuário:", data:result})
+        } catch (error) {
+            
+        }
+    }
 }
